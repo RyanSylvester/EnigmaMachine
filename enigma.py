@@ -104,12 +104,15 @@ class Rotorboard:
                 ToIterate.append(False)
         ToIterate.append(True)
 
+        # On a 4 rotor machine the leftmost (Greek) rotor has no pawl, so it never rotates.
+        # Clear it before the double step pass: a slow rotor sitting on its own notch
+        # must not push anything, because no pawl reads that notch.
+        if len(self.Position) == 4:
+            ToIterate[0] = False
+
         for x in range(len(ToIterate)-1): # Double step pass
             if ToIterate[x] == True:
                 ToIterate[x+1] = True
-
-        if len(self.Position) == 4: # If it is a 4+ rotor machine, the fourth can't rotate
-            ToIterate[0] = False
 
         for x in range(len(ToIterate)): # Iterate the rotors that should be iterated
             if ToIterate[x] == True:
